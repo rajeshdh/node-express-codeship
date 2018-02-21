@@ -9,6 +9,6 @@
   - name: herokudeployment
     tag: master
     service: herokudeployment
-    command: codeship_heroku deploy /deploy nodejs-express-codeship
+    command: codeship_heroku deploy /deploy nodecodeship
     service: herokudeployment
-    command: heroku run --app codeship-heroku-deployment -- bundle exec r
+    command: heroku run --app nodecodeship -- bundle exec r
