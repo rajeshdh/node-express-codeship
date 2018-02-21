@@ -11,4 +11,4 @@
     service: herokudeployment
     command: codeship_heroku deploy /deploy nodecodeship
     service: herokudeployment
-    command: heroku run --app nodecodeship -- bundle exec r
+    command: heroku run --app nodecodeship -- bundle exec rake db:migrate
