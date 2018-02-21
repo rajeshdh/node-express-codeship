@@ -12,7 +12,7 @@ This repo serves two main goals:
 
 The following `README` is a guide to build and deploy with Codeship Pro You will also be able to run this project locally, and use it as a starter app for NodeJS Docker projects.
 
-Be sure to star/watch this repo to stay up-to-date with any changes. If you have any questions or suggestions regarding this example , please submit an [issue here](https://github.com/codeship-library/nodejs-express-todoapp/issues/new).
+Be sure to star/watch this repo to stay up-to-date with any changes. If you have any questions or suggestions regarding this example , please submit an [issue here](https://github.com/rajeshdh/node-express-codeship/issues/new).
 
 ## Getting Started
 
@@ -51,7 +51,7 @@ Since this repository is on Github, you can [fork this repo](https://help.github
 1. Create a new repository
   1. [Bitbucket](https://confluence.atlassian.com/bitbucket/create-a-git-repository-759857290.html)
   2. [Gitlab](https://docs.gitlab.com/ee/gitlab-basics/create-project.html)
-2. Download this repo's [source zip file](https://github.com/codeship-library/nodejs-express-todoapp/archive/master.zip)
+2. Download this repo's [source zip file](https://github.com/rajeshdh/node-express-codeship/archive/master.zip)
 3. Extract the zip, and navigate to the source code folder.
 4. Use the following terminal commands (assuming you are using Git)
 
@@ -180,4 +180,4 @@ To simplify the deployment to Heroku, Codeship provides a Docker image called [`
 
 When complete and the build is green, you should now be able to navigate to the app with the Heroku provided url `yourappname.heroku.com`.
 
-If you run into trouble at any point, please submit an [issue here](https://github.com/codeship-library/nodejs-express-todoapp/issues/new).
+If you run into trouble at any point, please submit an [issue here](https://github.com/rajeshdh/node-express-codeship/issues/new).
