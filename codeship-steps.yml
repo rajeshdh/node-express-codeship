@@ -1,0 +1,8 @@
+- type: parallel 
+  steps:
+  - name: lint
+    service: web
+    command: npm run lint
+  - name: tests
+    service: web
+    command: bin/ci "npm test -- --forceExit"

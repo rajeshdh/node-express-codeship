@@ -1,0 +1,220 @@
+'use strict';var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) {return typeof obj;} : function (obj) {return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;};var _supertest = require('supertest');var _supertest2 = _interopRequireDefault(_supertest);
+var _server = require('../server');var _server2 = _interopRequireDefault(_server);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
+
+var todo = { title: 'blah' };
+
+describe('Todo-Backend API', function () {
+  describe('the pre-requisites', function () {
+    it('the api root responds to a GET (i.e. the server is up and accessible, CORS headers are set up)', function (done) {
+      (0, _supertest2.default)(_server2.default).
+      get('/todos').
+      expect(200).
+      end(function (err) {
+        expect(err).toBeNull();
+        done();
+      });
+    });
+    it('the api root responds to a POST with the todo which was posted to it', function (done) {
+      (0, _supertest2.default)(_server2.default).
+      post('/todos').
+      send(todo).
+      expect(201).
+      end(function (err, res) {
+        expect(err).toBeNull();
+        expect(res.body).toHaveProperty('title', 'blah');
+        done();
+      });
+    });
+    it('the api root responds successfully to a DELETE', function (done) {
+      (0, _supertest2.default)(_server2.default).
+      delete('/todos').
+      expect(204).
+      end(function (err) {
+        expect(err).toBeNull();
+        done();
+      });
+    });
+    it('after a DELETE the api root responds to a GET with a JSON representation of an empty array', function (done) {
+      (0, _supertest2.default)(_server2.default).
+      get('/todos').
+      expect(200).
+      end(function (err, res) {
+        expect(res.body).toEqual([]);
+        done();
+      });
+    });
+  });
+
+  describe('storing new todos by posting to the root url', function () {
+
+    beforeEach(function (done) {
+      (0, _supertest2.default)(_server2.default).
+      delete('/todos').
+      end(function (err) {
+        expect(err).toBeNull();
+        done();
+      });
+    });
+
+    it('adds a new todo to the list of todos at the root url', function (done) {
+      (0, _supertest2.default)(_server2.default).
+      post('/todos').
+      send(todo).
+      expect(201).
+      end(function (err, res) {
+        expect(err).toBeNull();
+        expect(res.body).toHaveProperty('title', 'blah');
+        done();
+      });
+    });
+    it('sets up a new todo as initially not completed', function (done) {
+      (0, _supertest2.default)(_server2.default).
+      post('/todos').
+      send(todo).
+      expect(201).
+      end(function (err, res) {
+        expect(err).toBeNull();
+        expect(res.body).toHaveProperty('completed', false);
+        done();
+      });
+    });
+    it('each new todo has a url, and you can navigate to it', function (done) {
+      var currentTodo = void 0;
+      var client = (0, _supertest2.default)(_server2.default);
+      client.
+      post('/todos').
+      send(todo).
+      expect(201).
+      end(function (err, res) {
+        expect(err).toBeNull();
+        expect(res.body).toHaveProperty('url');
+        expect(_typeof(res.body.url)).toEqual('string');
+        currentTodo = res.body;
+        client.
+        get('/todos/' + currentTodo.id).
+        end(function (err, res) {
+          expect(err).toBeNull();
+          expect(res.body.id).toEqual(currentTodo.id);
+          done();
+        });
+      });
+    });
+  });
+
+  describe('working with an existing todo', function () {
+    it('can change the todos title by PATCHing to the todos url', function (done) {
+      var currentTodo = void 0;
+      var client = (0, _supertest2.default)(_server2.default);
+      client.
+      post('/todos').
+      send(todo).
+      expect(201).
+      end(function (err, res) {
+        expect(err).toBeNull();
+        currentTodo = res.body;
+        client.
+        patch('/todos/' + currentTodo.id).
+        send({ 'title': 'different title now' }).
+        end(function (err, res) {
+          expect(err).toBeNull();
+          expect(res.body.title).toEqual('different title now');
+          done();
+        });
+      });
+    });
+    it('can change the todos completedness by PATCHing to the todos url', function (done) {
+      var currentTodo = void 0;
+      var client = (0, _supertest2.default)(_server2.default);
+      client.
+      post('/todos').
+      send(todo).
+      expect(201).
+      end(function (err, res) {
+        expect(err).toBeNull();
+        expect(res.body.completed).toEqual(false);
+        currentTodo = res.body;
+        client.
+        patch('/todos/' + currentTodo.id).
+        send({ 'completed': true }).
+        end(function (err, res) {
+          expect(err).toBeNull();
+          expect(res.body.completed).toEqual(true);
+          done();
+        });
+      });
+    });
+    it('changes to a todo are persisted and show up when re-fetching the todo', function (done) {
+      var currentTodo = void 0;
+      var client = (0, _supertest2.default)(_server2.default);
+      client.
+      post('/todos').
+      send(todo).
+      expect(201).
+      end(function (err, res) {
+        expect(err).toBeNull();
+        currentTodo = res.body;
+        client.
+        patch('/todos/' + currentTodo.id).
+        send({ 'title': 'new title', 'completed': true }).
+        end(function (err) {
+          expect(err).toBeNull();
+          client.
+          get('/todos/' + currentTodo.id).
+          end(function (err, res) {
+            expect(err).toBeNull();
+            expect(res.body.completed).toEqual(true);
+            expect(res.body.title).toEqual('new title');
+            done();
+          });
+        });
+      });
+    });
+    it('can delete a todo making a DELETE request to the todos url', function (done) {
+      var currentTodo = void 0;
+      var client = (0, _supertest2.default)(_server2.default);
+      client.
+      post('/todos').
+      send(todo).
+      expect(201).
+      end(function (err, res) {
+        expect(err).toBeNull();
+        currentTodo = res.body;
+        client.
+        delete('/todos/' + currentTodo.id).
+        expect(204).
+        end(function (err) {
+          expect(err).toBeNull();
+          done();
+        });
+      });
+    });
+  });
+
+  describe('tracking todo order', function () {
+    it('can PATCH a todo to change its order and it remembers changes', function (done) {
+      var currentTodo = void 0;
+      var client = (0, _supertest2.default)(_server2.default);
+      client.
+      post('/todos').
+      send(todo).
+      expect(201).
+      end(function (err, res) {
+        expect(err).toBeNull();
+        currentTodo = res.body;
+        client.
+        patch('/todos/' + currentTodo.id).
+        send({ 'order': 123 }).
+        end(function (err) {
+          expect(err).toBeNull();
+          client.
+          get('/todos/' + currentTodo.id).
+          end(function (err, res) {
+            expect(err).toBeNull();
+            expect(res.body.order).toEqual(123);
+            done();
+          });
+        });
+      });
+    });
+  });
+});
