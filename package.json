@@ -44,7 +44,7 @@
     "db-migrate-pg": "^0.1.11",
     "express": "^4.15.2",
     "express-simple-errors": "^1.0.0",
-    "isvalid": "^1.6.6",
+    "isvalid": "^2.0.2",
     "pg": "^6.1.3"
   },
   "devDependencies": {
