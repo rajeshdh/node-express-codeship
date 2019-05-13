@@ -41,7 +41,7 @@
     "body-parser": "^1.17.1",
     "cors": "^2.8.1",
     "db-migrate": "^0.10.0-beta.20",
-    "db-migrate-pg": "^0.1.11",
+    "db-migrate-pg": "^0.5.1",
     "express": "^4.15.2",
     "express-simple-errors": "^1.0.0",
     "isvalid": "^1.6.6",
