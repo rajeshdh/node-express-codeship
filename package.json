@@ -52,7 +52,7 @@
     "eslint": "^3.17.1",
     "eslint-watch": "^3.0.1",
     "jest": "^19.0.2",
-    "nodemon": "^1.11.0",
+    "nodemon": "^2.0.7",
     "supertest": "^3.0.0"
   },
   "jest": {
